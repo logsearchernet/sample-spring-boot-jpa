@@ -14,14 +14,18 @@ public class FileDao extends BaseDao<FileEntity, String> {
 
 	private static Log logger = LogFactory.getLog(FileDao.class);
 	
-	public void save(String name, byte[] b){
+	public void save(String name, String filename, byte[] b){
 		String id = UUID.randomUUID().toString();
 		FileEntity f = new FileEntity();
 		f.setId(id);
 		f.setName(name);
+		f.setFilename(filename);
 		f.setFile(b);
 		create(f);
 		
 		logger.info("ID=>"+id);
+		
+		long count = countWithNamedQuery("count", null);
+		logger.info("COUNT=>"+ count);
 	}
 }

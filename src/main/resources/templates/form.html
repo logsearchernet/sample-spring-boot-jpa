@@ -9,12 +9,17 @@
 <h1 layout:fragment="header">File Upload</h1>
 <div layout:fragment="content" class="container">
 <h3>File Upload:</h3>
+
+<form action="#" th:action="@{/uploadFile}" th:object="${fileForm}" enctype="multipart/form-data" method="post">
+Name: <input type="text" th:field="*{name}"/>
+<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+<br/>
 Select a file to upload: <br />
-<form action="uploadFile" method="post" enctype="multipart/form-data">
 <input type="file" name="file" size="50" />
 <br />
 <input type="submit" value="Upload File" />
 </form>
+
 </div>
 </body>
 </html>

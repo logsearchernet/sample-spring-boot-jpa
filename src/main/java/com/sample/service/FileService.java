@@ -14,7 +14,7 @@ public class FileService {
 	private FileDao fileDao;
 	
 	@Transactional
-	public void save(String name, byte[] b){
-		fileDao.save(name, b);
+	public void save(String name, String filename, byte[] b){
+		fileDao.save(name, filename, b);
 	}
 }

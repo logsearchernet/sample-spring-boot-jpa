@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @NamedQueries({
@@ -27,6 +28,9 @@ public class FileEntity implements Serializable {
 	
 	@Column(name="name")
 	private String name;
+	
+	@Column(name="filename")
+	private String filename;
 	
 	@Column(name="file")
 	@Lob
@@ -55,6 +59,14 @@ public class FileEntity implements Serializable {
 
 	public void setFile(byte[] file) {
 		this.file = file;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 	
 	
