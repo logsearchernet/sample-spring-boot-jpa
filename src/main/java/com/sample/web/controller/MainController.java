@@ -31,6 +31,7 @@ public class MainController {
 	
 	@RequestMapping(value="/")
 	public String index(){
+		logger.info("-- INDEX --");
 		return "index";
 	}
 	
