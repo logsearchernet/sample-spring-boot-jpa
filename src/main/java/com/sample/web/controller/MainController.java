@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sample.service.FileService;
 
 @Controller
+@RequestMapping("/")
 public class MainController {
 	
 	private static Log logger = LogFactory.getLog(MainController.class);
@@ -33,6 +34,16 @@ public class MainController {
 		return "index";
 	}
 	
+	
+	@RequestMapping(value="/form")
+	public String form(){
+		return "form";
+	}
+	
+	@RequestMapping(value="/form2")
+	public String form2(){
+		return "form2";
+	}
     
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     @ResponseBody

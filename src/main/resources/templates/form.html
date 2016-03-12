@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout">
+<head>
+<title>Messages : Create</title>
+</head>
+<body>
+<h1 layout:fragment="header">File Upload</h1>
+<div layout:fragment="content" class="container">
+<h3>File Upload:</h3>
+Select a file to upload: <br />
+<form action="uploadFile" method="post" enctype="multipart/form-data">
+<input type="file" name="file" size="50" />
+<br />
+<input type="submit" value="Upload File" />
+</form>
+</div>
+</body>
+</html>
