@@ -28,11 +28,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	  public void addResourceHandlers(ResourceHandlerRegistry registry) {
-	    	System.out.println("---> Start");
+		Integer period = 31556926;
 		if (!registry.hasMappingForPattern("/webjars/**")) {
-			System.out.println("---->hasMappingForPattern");
 			registry.addResourceHandler("/webjars/**").addResourceLocations(
-	                "classpath:/META-INF/resources/webjars/");
+	                "classpath:/META-INF/resources/webjars/").setCachePeriod(period);
 		}
-	}
+	} 
 }
