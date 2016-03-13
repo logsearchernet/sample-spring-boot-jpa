@@ -14,7 +14,7 @@
 		</div>
 		<form class="form-horizontal" action="#" th:action="@{/uploadFile}" th:object="${fileForm}" enctype="multipart/form-data" method="post">
 			<div class="form-group">
-				<label for="name" class="col-sm-4 control-label">Name</label>
+				<label for="name" class="col-sm-4 control-label" th:text="#{name}">Name</label>
 				<div class="col-sm-8">
 					<input type="text" class="form-control" th:field="*{name}" placeholder="Name"/>
 					<div class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
@@ -23,7 +23,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="file" class="col-sm-4 control-label">Select a file to upload:</label>
+				<label for="file" class="col-sm-4 control-label" th:text="#{selectUpload}">Select a file to upload</label>
 				<div class="col-sm-8">
 					<input type="file" name="file" size="50" /> 
 				</div>
