@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,8 +19,15 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.spi.LoggerFactory;
+
+import com.sample.web.controller.MainController;
+
 public class BaseDao<E extends Serializable, K> {
 	
+	private static Log logger = LogFactory.getLog(BaseDao.class);
 	
 	@PersistenceContext
 	protected EntityManager em;
@@ -45,8 +53,6 @@ public class BaseDao<E extends Serializable, K> {
 	        em.flush();
 	    }
 	    
-
-	   
 	    public void delete(K id) {
 	        E delete = em.getReference(entityClass, id);
 
@@ -160,7 +166,7 @@ public class BaseDao<E extends Serializable, K> {
 	            }
 	        }
 	       String s = q.unwrap(org.hibernate.Query.class).getQueryString();
-	       System.out.println("getQueryString="+s);
+	       logger.debug("getQueryString="+s);
 	        return q.getSingleResult();
 	    }
 

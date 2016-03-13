@@ -47,8 +47,10 @@ public class MainController {
 	
 	
 	@RequestMapping(value="/form")
-	public String form(FileForm fileForm, @RequestParam(required=false) String success){
-		
+	public String form(HttpServletRequest request, FileForm fileForm, @RequestParam(required=false) String success){
+
+    	Long count = fileService.count();
+    	request.setAttribute("count", count);
 		return "form";
 	}
     
@@ -56,16 +58,6 @@ public class MainController {
     public String uploadFile(HttpServletRequest request, @Valid FileForm fileForm, BindingResult bindingResult) throws IOException, ServletException{
     	
     	if (bindingResult.hasErrors()) {
-			// Retrieve the error message MANUAL
-			for (Object object : bindingResult.getAllErrors()) {
-			    if(object instanceof FieldError) {
-			        FieldError fieldError = (FieldError) object;
-
-			        String message = messageSource.getMessage(fieldError, null);
-			        logger.info("message=>"+message);
-			    }
-			}
-			
             return "form";
         }
     	
@@ -74,6 +66,7 @@ public class MainController {
      	InputStream input = filePart.getInputStream();
      	byte[] b = IOUtils.readBytesAndClose(input, 0);
     	fileService.save(fileForm.getName(), filename, b);
+    	
 	    
 	    return "redirect:/form?success=1";
     }

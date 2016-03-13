@@ -5,15 +5,7 @@
 
 
       
-      <!-- validate | update | create | create-drop -->
-      <properties>
-      	  <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-      	 <property name="hibernate.hbm2ddl.auto" value="validate"/>
-         <property name="hibernate.show_sql" value="true"/>
-         <property name="hibernate.cache.provider_class" value="org.hibernate.cache.EhCacheProvider"/>
-         <property name="hibernate.cache.use_second_level_cache" value="false"/>
-		 <property name="hibernate.cache.use_query_cache" value="false"/>
-      </properties> 
+      
    </persistence-unit>
    
    

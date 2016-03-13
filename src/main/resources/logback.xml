@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="USER_HOME" value="./logs" />
+	
+	<appender name="FIX_WINDOW_BASED_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${USER_HOME}/SystemOut.log</file>
+   	<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+     		<fileNamePattern>${USER_HOME}/SystemOut-%i.log</fileNamePattern>
+     		<minIndex>1</minIndex>
+     		<maxIndex>10</maxIndex>
+   	</rollingPolicy>
+
+ 		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+     		<maxFileSize>1MB</maxFileSize>
+   	</triggeringPolicy>
+   	
+   	<encoder>
+     		<pattern>[%d{MM/dd/yy HH\:mm\:ss\:SSS z}] %t %-5p %-15c %M > %m%n</pattern>
+   	</encoder>
+ 	</appender>
+
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <!-- <pattern>%msg%n</pattern> -->
+      <pattern>%t %-5p %-15c %M > %m%n</pattern>
+    </encoder>
+  </appender>
+  
+  <logger name="com.sample" level="DEBUG"/>
+
+  <root level="ERROR">
+    <appender-ref ref="FIX_WINDOW_BASED_FILE" />
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>

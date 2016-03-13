@@ -17,4 +17,8 @@ public class FileService {
 	public void save(String name, String filename, byte[] b){
 		fileDao.save(name, filename, b);
 	}
+	
+	public Long count(){
+		return fileDao.count();
+	}
 }
