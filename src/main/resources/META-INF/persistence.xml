@@ -3,10 +3,6 @@
    <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
       <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-
-      
-      
    </persistence-unit>
-   
    
 </persistence>
