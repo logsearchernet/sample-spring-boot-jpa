@@ -29,11 +29,9 @@ import com.sample.service.FileService;
 
 @Controller
 @RequestMapping("/")
-public class MainController { //implements ErrorController {
+public class MainController { 
 	
 	private static Log logger = LogFactory.getLog(MainController.class);
-	
-	private static final String PATH = "/error";
 	
 	@Autowired
 	private FileService fileService;
@@ -70,13 +68,4 @@ public class MainController { //implements ErrorController {
 	    return "redirect:/form?success=1";
     }
 
-    /*@RequestMapping(value = PATH)
-    public String error() {
-        return "error";
-    }
-
-    @Override
-    public String getErrorPath() {
-        return PATH;
-    }*/
 }

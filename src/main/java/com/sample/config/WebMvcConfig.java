@@ -19,6 +19,10 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @Configuration
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
+	
+	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+	        "classpath:/META-INF/resources/", "classpath:/resources/",
+	        "classpath:/static/", "classpath:/public/" };
 
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -39,6 +43,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 			registry.addResourceHandler("/webjars/**").addResourceLocations(
 	                "classpath:/META-INF/resources/webjars/").setCachePeriod(period);
 		}
+		 registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
 	} 
 	
 	@Bean
