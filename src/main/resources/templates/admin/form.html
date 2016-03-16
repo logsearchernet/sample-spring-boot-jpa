@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout-admin">
 <head>
 <title>Messages : Create</title>
 </head>
@@ -12,7 +12,7 @@
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong><i class="fa fa-info-circle"></i> Success!</strong>
 		</div>
-		<form class="form-horizontal" action="#" th:action="@{/uploadFile}" th:object="${fileForm}" enctype="multipart/form-data" method="post">
+		<form class="form-horizontal" action="#" th:action="@{uploadFile}" th:object="${fileForm}" enctype="multipart/form-data" method="post">
 			<div class="form-group">
 				<label for="name" class="col-sm-4 control-label" th:text="#{name}">Name</label>
 				<div class="col-sm-8">

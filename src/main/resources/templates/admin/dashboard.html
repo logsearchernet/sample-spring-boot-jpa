@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout-admin">
+<head>
+<title>Messages : Create</title>
+</head>
+<body>
+<h1 layout:fragment="header">Menu</h1>
+<div layout:fragment="content" class="container">
+<a th:href="@{form}">Form Upload Here</a>
+<br/>
+<a th:href="@{/h2-console}">H2 Console</a>
+<br/>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+</div>
+</body>
+</html>

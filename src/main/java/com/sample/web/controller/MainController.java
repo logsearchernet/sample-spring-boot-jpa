@@ -1,71 +1,56 @@
 package com.sample.web.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.h2.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ErrorController;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sample.form.FileForm;
-import com.sample.service.FileService;
+import com.sample.form.RegisterForm;
+import com.sample.model.UsersEntity;
+import com.sample.service.RegisterService;
 
 @Controller
-@RequestMapping("/")
-public class MainController { 
+public class MainController {
 	
 	private static Log logger = LogFactory.getLog(MainController.class);
 	
 	@Autowired
-	private FileService fileService;
-	
+	private RegisterService registerService;
+
 	@RequestMapping(value="/")
 	public String index(){
 		logger.info("-- INDEX --");
 		return "index";
 	}
 	
-	
-	@RequestMapping(value="/form")
-	public String form(HttpServletRequest request, FileForm fileForm, @RequestParam(required=false) String success){
-
-    	Long count = fileService.count();
-    	request.setAttribute("count", count);
-		return "form";
+	@RequestMapping(value="/registerForm")
+	public String registerForm(RegisterForm registerForm){
+		logger.info("-- REGISTER FORM --");
+		return "registerForm";
 	}
-    
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-    public String uploadFile(HttpServletRequest request, @Valid FileForm fileForm, BindingResult bindingResult) throws IOException, ServletException{
-    	
-    	if (bindingResult.hasErrors()) {
-            return "form";
+	
+	@RequestMapping(value="/register", method = RequestMethod.POST)
+	public String register(HttpServletRequest request, @Valid RegisterForm registerForm, BindingResult bindingResult){
+		logger.info("-- REGISTER --");
+		if (bindingResult.hasErrors()) {
+            return "/registerForm";
         }
-    	
-    	Part filePart = request.getPart("file");
-		String filename = filePart.getSubmittedFileName();
-     	InputStream input = filePart.getInputStream();
-     	byte[] b = IOUtils.readBytesAndClose(input, 0);
-    	fileService.save(fileForm.getName(), filename, b);
-    	
-	    
-	    return "redirect:/form?success=1";
-    }
-
+		
+		UsersEntity user = registerService.findByEmail(registerForm.getEmail());
+		
+		if (user == null){
+			String role = "ROLE_USER";
+			registerService.register(registerForm.getEmail(), registerForm.getPassword(), role);
+			return "redirect:/registerForm?success=1";
+		} else {
+			bindingResult.rejectValue("email", "error.exist.email", "An account already exists for this email.");
+			return "/registerForm";
+		}
+	}
 }

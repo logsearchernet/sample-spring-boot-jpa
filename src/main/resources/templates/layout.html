@@ -17,40 +17,6 @@
 <body>
 
 	<div class="container">
-		<nav role="navigation" class="navbar navbar-default">
-	        <!-- Brand and toggle get grouped for better mobile display -->
-	        <div class="navbar-header">
-	            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-	                <span class="sr-only">Toggle navigation</span>
-	                <span class="icon-bar"></span>
-	                <span class="icon-bar"></span>
-	                <span class="icon-bar"></span>
-	            </button>
-	            <a href="/" class="navbar-brand">Brand</a>
-	        </div>
-	        <!-- Collection of nav links and other content for toggling -->
-	        <div id="navbarCollapse" class="collapse navbar-collapse">
-	            <ul class="nav navbar-nav">
-	                <li th:classappend="${#httpServletRequest.getRequestURI() == '/' ? 'active':''}"><a href="/">Home</a></li>
-	                <li th:classappend="${#httpServletRequest.getRequestURI() == '/form' or #httpServletRequest.getRequestURI() == '/uploadFile' ? 'active':''}">
-	                	<a href="/form">File Upload</a>
-	                </li>
-	            </ul>
-	            <ul class="nav navbar-nav navbar-right">
-
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="?lang=en">English</a></li>
-							<li><a href="?lang=zh">Chinese</a></li>
-						</ul>
-					</li>
-
-
-					<li><a href="#">Login</a></li>
-	            </ul>
-	        </div>
-	    </nav>
 		<h1 layout:fragment="header"></h1>
 		<div layout:fragment="content"></div>
 	</div>

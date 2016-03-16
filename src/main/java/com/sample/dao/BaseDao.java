@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,9 +20,6 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.spi.LoggerFactory;
-
-import com.sample.web.controller.MainController;
 
 public class BaseDao<E extends Serializable, K> {
 	
@@ -171,7 +167,8 @@ public class BaseDao<E extends Serializable, K> {
 	    }
 
 	   
-	    public <T> List<T> findAggregateWithNamedQuery(String namedQuery, int limit, Map<String, Object> params, Class<T> type) {
+	    @SuppressWarnings("unchecked")
+		public <T> List<T> findAggregateWithNamedQuery(String namedQuery, int limit, Map<String, Object> params, Class<T> type) {
 	        if (namedQuery != null && !namedQuery.isEmpty() && type != null) {
 	            Query q = em.createNamedQuery(namedQuery, type);
 
@@ -188,7 +185,8 @@ public class BaseDao<E extends Serializable, K> {
 	    }
 
 	   
-	    public <T> List<T> doWithNativeQuery(String query, Object[] params, Class<T> type) {
+	    @SuppressWarnings("unchecked")
+		public <T> List<T> doWithNativeQuery(String query, Object[] params, Class<T> type) {
 	        if (query != null && !query.isEmpty() && type != null) {
 	            Query q = em.createNativeQuery(query, type);
 
