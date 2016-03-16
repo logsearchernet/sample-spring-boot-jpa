@@ -2,6 +2,7 @@ package com.sample.web.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sample.form.FileForm;
+import com.sample.form.UserForm;
+import com.sample.model.UsersEntity;
 import com.sample.service.FileService;
+import com.sample.service.UserService;
 
 @Controller
 @RequestMapping("/admin/")
@@ -29,6 +33,9 @@ public class AdminController {
 	
 	@Autowired
 	private FileService fileService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value="dashboard")
 	public String index(){
@@ -64,4 +71,15 @@ public class AdminController {
 	    return "redirect:/admin/form?success=1";
     }
 
+    @RequestMapping(value="userList")
+	public String userList(HttpServletRequest request){
+    	
+    	int pageNumber = 1;
+    	int pageSize = 2;
+    	
+    	List<UserForm> userFormList = userService.findUser(pageNumber, pageSize);
+    	request.setAttribute("userFormList", userFormList);
+
+		return "/admin/userList";
+	}
 }

@@ -28,7 +28,7 @@ public class FileDao extends BaseDao<FileEntity, String> {
 	}
 	
 	public Long count(){
-		long count = countWithNamedQuery("count", null);
+		long count = countWithNamedQuery("file.count", null);
 		logger.info("COUNT=>"+ count);
 		return count;
 	}

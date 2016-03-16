@@ -253,4 +253,11 @@ public class BaseDao<E extends Serializable, K> {
 	        return q.getResultList();
 	    }
 	
+	    @SuppressWarnings("unchecked")
+		public List<E> loadPagination(String q, int pageNumber, int pageSize){
+			int first = (pageNumber-1) * pageSize;
+			Query query = em.createQuery(q, entityClass);
+			return query.setMaxResults(pageSize).setFirstResult(first).getResultList();
+			
+		}
 }

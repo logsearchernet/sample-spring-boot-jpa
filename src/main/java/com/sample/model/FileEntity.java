@@ -13,7 +13,7 @@ import org.hibernate.annotations.NamedQuery;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name="count",
+    @NamedQuery(name="file.count",
                 query="select count(c) from FileEntity c")
 })
 @Table(name="edu_file")

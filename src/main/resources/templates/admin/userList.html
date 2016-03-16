@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout-admin">
+<head>
+<title>Messages : Create</title>
+</head>
+<body>
+	<h1 layout:fragment="header">Menu</h1>
+	<div layout:fragment="content" class="container">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<td class="text-center">Email</td>
+					<td class="text-center">Role</td>
+					<td class="text-center">Enabled</td>
+					<td class="text-center">Action</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user: ${userFormList}">
+					<td>
+						<div th:utext="${user.email}">a@a.com</div>
+					</td>
+					<td th:each="role: ${user.roles}">
+						<div th:utext="${role.userRoleId.role}">ROLE_USER</div>
+					</td>
+					<td>
+						<div th:utext="${user.enabled}">TRUE</div>
+					</td>
+					<td>
+						<div>
+							<a href="">EDIT</a>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

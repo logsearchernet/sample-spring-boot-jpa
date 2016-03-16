@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+
 public class RegisterForm implements Serializable {
 
 	/**
@@ -11,6 +13,7 @@ public class RegisterForm implements Serializable {
 	 */
 	private static final long serialVersionUID = -8420023432886035322L;
 	@Size(min=6, max=30)
+	@Email
 	private String email;
 	@Size(min=6, max=12)
 	private String password;

@@ -31,8 +31,9 @@
 	        <!-- Collection of nav links and other content for toggling -->
 	        <div id="navbarCollapse" class="collapse navbar-collapse">
 	            <ul class="nav navbar-nav">
-	                <li th:classappend="${#httpServletRequest.getRequestURI() == '/' ? 'active':''}"><a th:href="@{dashboard}">Home</a></li>
-	                <li th:classappend="${#httpServletRequest.getRequestURI() == '/form' or #httpServletRequest.getRequestURI() == '/uploadFile' ? 'active':''}">
+	                <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/dashboard' ? 'active':''}"><a th:href="@{dashboard}">Home</a></li>
+	                <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/userList' ? 'active':''}"><a th:href="@{userList}">Users</a></li>
+	                <li th:classappend="${#httpServletRequest.getRequestURI() == '/admin/form' or #httpServletRequest.getRequestURI() == '/uploadFile' ? 'active':''}">
 	                	<a th:href="@{form}">File Upload</a>
 	                </li>
 	            </ul>
