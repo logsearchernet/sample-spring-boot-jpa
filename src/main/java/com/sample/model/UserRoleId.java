@@ -48,4 +48,9 @@ public class UserRoleId implements Serializable {
 	public int hashCode() {
 		return (int) email.hashCode() + role.hashCode();
 	}
+	
+	@Override
+	public String toString(){
+		return email+"-"+role;
+	}
 }

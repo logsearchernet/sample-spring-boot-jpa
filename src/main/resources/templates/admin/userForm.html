@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout-admin">
+<head>
+<title>Messages : Create</title>
+</head>
+<body>
+	<h1 layout:fragment="header">
+		Register
+	</h1>
+	<div layout:fragment="content" class="container">
+		<div class="alert alert-success" th:if="${param.success != null and param.success[0] == '1'}">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong><i class="fa fa-info-circle"></i> Success!</strong>
+		</div>
+		<form class="form-horizontal" action="#" th:action="@{user}" th:object="${userForm}" enctype="multipart/form-data" method="post">
+			<div class="form-group">
+				<label for="name" class="col-sm-4 control-label" th:text="#{email}">Email</label>
+				<div class="col-sm-8">
+					<span  th:text="*{email}">A@A.COM</span>
+					<input type="hidden" name="email" th:value="*{email}"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="name" class="col-sm-4 control-label" th:text="#{password}">Password</label>
+				<div class="col-sm-8">
+					<input type="password" class="form-control" th:field="*{password}"/>
+					<div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+						<strong><i class="fa fa-exclamation-triangle"></i> Warning!</strong>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-8">
+					<input type="checkbox" id="enabled" th:field="*{enabled}" th:checked="*{enabled}"/>
+					<label for="enabled" th:text="#{enabled}">Enabled</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="name" class="col-sm-4 control-label" th:text="#{role}">Role</label>
+				<div class="col-sm-8">
+                    <select th:field="*{roles}" multiple="multiple" class="form-control">
+					    <option th:each="role : ${roleList}" th:value="${{role}}" th:text="${role}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-8">
+					<button type="submit" class="btn btn-default">Update Detail</button>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</body>
+</html>

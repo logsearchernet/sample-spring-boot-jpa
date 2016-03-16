@@ -38,7 +38,5 @@ public class UserRolesEntity  implements Serializable{
 	public void setUserRoleId(UserRoleId userRoleId) {
 		this.userRoleId = userRoleId;
 	}
-
-	
 	
 }

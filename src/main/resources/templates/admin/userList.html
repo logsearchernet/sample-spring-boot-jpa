@@ -20,15 +20,15 @@
 					<td>
 						<div th:utext="${user.email}">a@a.com</div>
 					</td>
-					<td th:each="role: ${user.roles}">
-						<div th:utext="${role.userRoleId.role}">ROLE_USER</div>
+					<td>
+						<div  th:each="role: ${user.roles}" th:utext="${role}">ROLE_USER</div>
 					</td>
 					<td>
 						<div th:utext="${user.enabled}">TRUE</div>
 					</td>
 					<td>
 						<div>
-							<a href="">EDIT</a>
+							<a th:href="@{userForm(email=${user.email})}">EDIT</a>
 						</div>
 					</td>
 				</tr>
