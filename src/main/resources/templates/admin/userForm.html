@@ -7,7 +7,7 @@
 </head>
 <body>
 	<h1 layout:fragment="header">
-		Register
+		User Form : <span th:text="${action}"></span>
 	</h1>
 	<div layout:fragment="content" class="container">
 		<div class="alert alert-success" th:if="${param.success != null and param.success[0] == '1'}">
@@ -18,15 +18,28 @@
 			<div class="form-group">
 				<label for="name" class="col-sm-4 control-label" th:text="#{email}">Email</label>
 				<div class="col-sm-8">
-					<span  th:text="*{email}">A@A.COM</span>
-					<input type="hidden" name="email" th:value="*{email}"/>
+					<input type="email" class="form-control" th:field="*{email}" readonly="readonly" th:if="*{action} eq 'edit'"/>
+					<input type="email" class="form-control" th:field="*{email}"  th:if="*{action} eq 'create'"/>
+					<div class="field-error" th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}">
+						<strong><i class="fa fa-exclamation-triangle"></i> Warning!</strong>
+					</div>
 				</div>
+				
 			</div>
-			<div class="form-group">
+			<div class="form-group" th:if="*{action} eq 'create'">
 				<label for="name" class="col-sm-4 control-label" th:text="#{password}">Password</label>
 				<div class="col-sm-8">
 					<input type="password" class="form-control" th:field="*{password}"/>
 					<div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+						<strong><i class="fa fa-exclamation-triangle"></i> Warning!</strong>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" th:if="*{action} eq 'create'">
+				<label for="name" class="col-sm-4 control-label" th:text="#{passwordConfirm}">Confirm Password</label>
+				<div class="col-sm-8">
+					<input type="password" class="form-control" th:field="*{password2}"/>
+					<div class="field-error" th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}">
 						<strong><i class="fa fa-exclamation-triangle"></i> Warning!</strong>
 					</div>
 				</div>
@@ -44,11 +57,16 @@
                     <select th:field="*{roles}" multiple="multiple" class="form-control">
 					    <option th:each="role : ${roleList}" th:value="${{role}}" th:text="${role}"></option>
 					</select>
+					<div class="field-error" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">
+						<strong><i class="fa fa-exclamation-triangle"></i> Warning!</strong>
+					</div>
 				</div>
+				
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-4 col-sm-8">
-					<button type="submit" class="btn btn-default">Update Detail</button>
+					<input type="hidden" name="action" th:value="*{action}"/>
+					<button type="submit" class="btn btn-default">Submit</button>
 				</div>
 			</div>
 		</form>

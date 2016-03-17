@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.sample.model.UserRoleId;
 
-public class UserForm implements Serializable {
+public class UserPasswordForm implements Serializable {
 
 	/**
 	 * 
@@ -23,38 +23,19 @@ public class UserForm implements Serializable {
 	private String password;
 	@Size(min=6, max=12)
 	private String password2;
-	private boolean enabled;
-	private String action;
-	@NotEmpty
-	private Set<String> roles;
+	@Size(min=6, max=12)
+	private String passwordOld;
 	
-	public UserForm() {
+	public UserPasswordForm() {
 		super();
 	}
-	
-	public UserForm(String email, boolean enabled, Set<String> roles) {
-		super();
-		this.email = email;
-		this.enabled = enabled;
-		this.roles = roles;
-	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public boolean isEnabled() {
-		return enabled;
-	}
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-	public Set<String> getRoles() {
-		return roles;
-	}
-	public void setRoles(Set<String> roles) {
-		this.roles = roles;
 	}
 
 	public String getPassword() {
@@ -65,14 +46,6 @@ public class UserForm implements Serializable {
 		this.password = password;
 	}
 
-	public String getAction() {
-		return action;
-	}
-
-	public void setAction(String action) {
-		this.action = action;
-	}
-
 	public String getPassword2() {
 		return password2;
 	}
@@ -80,5 +53,14 @@ public class UserForm implements Serializable {
 	public void setPassword2(String password2) {
 		this.password2 = password2;
 	}
+
+	public String getPasswordOld() {
+		return passwordOld;
+	}
+
+	public void setPasswordOld(String passwordOld) {
+		this.passwordOld = passwordOld;
+	}
+	
 	
 }

@@ -50,21 +50,42 @@ public class UserService {
 		}
 		return formList;
 	}
+	
+	public UsersEntity findEntity4UserValidate(String email, String password){
+		UsersEntity user = userDao.find(email);
+		String dbPassword = user.getPassword();
+		if (passwordEncoder.matches(password, dbPassword)){
+			return user;
+		}
+		return null;
+		/*password = passwordEncoder.encode(password);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("email", email);
+		params.put("password", password);
+		return userDao.findSingleWithNamedQuery("user.findByEmailAndPassword", params);*/
+	}
+	
+	public UsersEntity findEntityById(String email) { 
+		return userDao.find(email);
+	}
 
 	public UserForm findById(String email) {
 		UsersEntity user = userDao.find(email);
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("email", email);
-		List<UserRolesEntity> userRoleList = userRoleDao.findWithNamedQuery("userRole.findByEmail", params);
-				
-		Set<String> userRoleSet = new HashSet<String>();
-		for (UserRolesEntity userRolesEntity : userRoleList) {
-			UserRoleId userRoleId = userRolesEntity.getUserRoleId();
-			userRoleSet.add(userRoleId.getRole());
+		if (user != null) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("email", email);
+			List<UserRolesEntity> userRoleList = userRoleDao.findWithNamedQuery("userRole.findByEmail", params);
+					
+			Set<String> userRoleSet = new HashSet<String>();
+			for (UserRolesEntity userRolesEntity : userRoleList) {
+				UserRoleId userRoleId = userRolesEntity.getUserRoleId();
+				userRoleSet.add(userRoleId.getRole());
+			}
+			UserForm form = new UserForm(email, user.isEnabled(), userRoleSet);
+			
+			return form;
 		}
-		UserForm form = new UserForm(email, user.isEnabled(), userRoleSet);
-		
-		return form;
+		return null;
 	}
 	
 	@Transactional
@@ -73,38 +94,42 @@ public class UserService {
 		String email = form.getEmail();
 		boolean enabled = form.isEnabled();
 		Set<String> roles = form.getRoles();
-		password = passwordEncoder.encode(password);
 		
 		// Handle UsersEntity
 		UsersEntity user = userDao.find(email);
 		if (user == null) {
 			user = new UsersEntity();
 			user.setEmail(email);
+			password = passwordEncoder.encode(password);
 			user.setPassword(password);
 			user.setEnabled(enabled);
 			
 			userDao.create(user);
 		} else {
 			user.setEmail(email);
-			user.setPassword(password);
 			user.setEnabled(enabled);
 			
 			userDao.update(user);
 		}
 		
 		// Handle UserRolesEntity
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("email", email);
+		userRoleDao.deleteWithNamedQuery("userRole.findByEmail", params);
 		for (String role : roles) {
 			UserRoleId userRoleId = new UserRoleId(email, role);
-			UserRolesEntity userRole = userRoleDao.find(userRoleId);
-			if (userRole == null){
-				userRole = new UserRolesEntity();
-				userRole.setUserRoleId(userRoleId);
-				userRoleDao.create(userRole);
-			} else {
-				userRole.setUserRoleId(userRoleId);
-				userRoleDao.update(userRole);
-			}
+			UserRolesEntity userRole = new UserRolesEntity();
+			userRole.setUserRoleId(userRoleId);
+			userRoleDao.create(userRole);
 		}
 		
+	}
+
+	@Transactional
+	public void updateUserEntity(UsersEntity user) {
+		String password = user.getPassword();
+		password = passwordEncoder.encode(password);
+		user.setPassword(password);
+		userDao.update(user);
 	}
 }

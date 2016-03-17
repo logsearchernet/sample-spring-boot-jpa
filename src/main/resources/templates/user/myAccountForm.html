@@ -32,6 +32,15 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="name" class="col-sm-4 control-label" th:text="#{passwordConfirm}">Confirm Password</label>
+				<div class="col-sm-8">
+					<input type="password" class="form-control" th:field="*{password2}"/>
+					<div class="field-error" th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}">
+						<strong><i class="fa fa-exclamation-triangle"></i> Warning!</strong>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
 				<div class="col-sm-offset-4 col-sm-8">
 					<button type="submit" class="btn btn-default">Update My Detail</button>
 				</div>

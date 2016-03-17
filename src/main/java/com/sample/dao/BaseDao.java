@@ -138,6 +138,20 @@ public class BaseDao<E extends Serializable, K> {
 	        return q.getResultList();
 	    }
 
+	    public void deleteWithNamedQuery(String named, Map<String, Object> params) {
+	        TypedQuery<E> q = em.createNamedQuery(named, entityClass);
+
+	        if (params != null && !params.isEmpty()) {
+	            for (Map.Entry<String, Object> entrySet : params.entrySet()) {
+	                q.setParameter(entrySet.getKey(), entrySet.getValue());
+	            }
+	        }
+
+	        List<E> list = q.getResultList();
+	        for (E e : list) {
+				em.remove(e);
+			}
+	    }
 	   
 	    public E findSingleWithNamedQuery(String named, Map<String, Object> params) {
 	        TypedQuery<E> q = em.createNamedQuery(named, entityClass);

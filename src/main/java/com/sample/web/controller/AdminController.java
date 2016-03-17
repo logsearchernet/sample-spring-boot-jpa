@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sample.form.FileForm;
 import com.sample.form.UserForm;
+import com.sample.form.UserPasswordForm;
 import com.sample.model.UserRoleId;
+import com.sample.model.UsersEntity;
 import com.sample.service.FileService;
 import com.sample.service.UserService;
 
@@ -41,6 +43,10 @@ public class AdminController {
 		roleList.add("ROLE_USER");
 		
 	}
+	
+	private static final String ACTION_EDIT = "edit";
+	private static final String ACTION_CREATE = "create";
+	
 	@Autowired
 	private FileService fileService;
 	
@@ -85,7 +91,7 @@ public class AdminController {
 	public String userList(HttpServletRequest request){
     	
     	int pageNumber = 1;
-    	int pageSize = 2;
+    	int pageSize = 10;
     	
     	List<UserForm> userFormList = userService.findUser(pageNumber, pageSize);
     	request.setAttribute("userFormList", userFormList);
@@ -94,34 +100,95 @@ public class AdminController {
 	}
     
     @RequestMapping(value="userForm")
-	public String userForm(HttpServletRequest request, Model model, @RequestParam(required=false) String email){
+	public String userForm(HttpServletRequest request, Model model, @RequestParam(required=false) String email, @RequestParam(required=false) boolean edit){
 		logger.info("-- USER FORM --, email=>"+email);
 		
-		UserForm form = userService.findById(email);
+		UserForm form = null;
+		if (email != null) {
+			form = userService.findById(email);
+		}
 		if (form == null){
 			form = new UserForm();
 		}
+		
+		form.setAction(edit?ACTION_EDIT:ACTION_CREATE);
 		model.addAttribute("userForm", form);
-		
-		
 		model.addAttribute("roleList", roleList);
+		model.addAttribute("action", edit?ACTION_EDIT:ACTION_CREATE);
 		
 		return "admin/userForm";
 	}
 	
 	@RequestMapping(value="user", method = RequestMethod.POST)
-	public String user(HttpServletRequest request, Model model, @Valid UserForm form, BindingResult bindingResult){
+	public String user(HttpServletRequest request, Model model, @Valid UserForm userForm, BindingResult bindingResult){
 		logger.info("-- USER --");
+		String email = userForm.getEmail();
+		String action = userForm.getAction(); 
+		boolean bEdit = (action.equals(ACTION_EDIT));
+		boolean bCreate = (action.equals(ACTION_CREATE));
+		model.addAttribute("roleList", roleList);
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("roleList", roleList);
             return "admin/userForm";
         }
 		
-		userService.save(form);
+		if (bCreate && !userForm.getPassword().equals(userForm.getPassword2())){
+			bindingResult.rejectValue("password", "error.password", "Password not match.");
+			return "admin/userForm";
+		}
 		
+		if (bCreate) {
+			UsersEntity user = userService.findEntityById(email);
+			if (user != null){
+				bindingResult.rejectValue("email", "error.exist.email", "An account already exists for this email.");
+				return "admin/userForm";
+			}
+			userService.save(userForm);
+			return "redirect:userForm?email="+email+"&success=1";
+		} else if (bEdit) {
+			UserForm user = userService.findById(email);
+			user.setEmail(email);
+			user.setEnabled(userForm.isEnabled());
+			user.setRoles(userForm.getRoles());
+			userService.save(user);
+			return "redirect:userForm?email="+email+"&success=1";
+		}
+		return "admin/userForm";
 		
-		return "redirect:userForm?email="+form.getEmail()+"&success=1";
 	}
 	
+	@RequestMapping(value = "userPasswordForm")
+	public String userPasswordForm(HttpServletRequest request, Model model,
+			@RequestParam(required = true) String email) {
+		logger.info("-- USER PASSWORD FORM --, email=>" + email);
+		UserPasswordForm form = new UserPasswordForm();
+		form.setEmail(email);
+		model.addAttribute("userPasswordForm", form);
+		return "admin/userPasswordForm";
+	}
 	
+	@RequestMapping(value="userPassword", method = RequestMethod.POST)
+	public String userPassword(HttpServletRequest request, Model model, @Valid UserPasswordForm userPasswordForm, BindingResult bindingResult){
+		String email = userPasswordForm.getEmail();
+		logger.info("-- USER PASSWORD FORM --, email=>" + email);
+		if (bindingResult.hasErrors()) {
+            return "admin/userPasswordForm";
+        }
+		
+		String passwordOld = userPasswordForm.getPasswordOld();
+		String password = userPasswordForm.getPassword();
+		String password2 = userPasswordForm.getPassword2();
+		UsersEntity user = userService.findEntity4UserValidate(email, passwordOld);
+		if (user == null) {
+			bindingResult.rejectValue("email", "error.notmatch.emailpassword");
+			return "admin/userPasswordForm";
+		} else if (!password.equals(password2)){
+			bindingResult.rejectValue("password", "error.notmatch.passwordconfirm");
+			return "admin/userPasswordForm";
+		} else {
+			user.setPassword(password);
+			userService.updateUserEntity(user);
+		}
+		
+		return "redirect:userPasswordForm?email="+email+"&success=1";
+	}
 }

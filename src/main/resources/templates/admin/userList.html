@@ -6,6 +6,9 @@
 <body>
 	<h1 layout:fragment="header">Menu</h1>
 	<div layout:fragment="content" class="container">
+		<div class="row pull-right"><a th:href="@{userForm}" class="btn btn-default">Create User</a></div>
+		<br/><br/>
+		<div class="row">
 		<table class="table table-bordered table-hover">
 			<thead>
 				<tr>
@@ -28,12 +31,15 @@
 					</td>
 					<td>
 						<div>
-							<a th:href="@{userForm(email=${user.email})}">EDIT</a>
+							<a th:href="@{userForm(email=${user.email}, edit=true)}">EDIT</a>
+							 | 
+							<a th:href="@{userPasswordForm(email=${user.email})}">CHANGE PASSWORD</a>
 						</div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
+		</div>
 	</div>
 </body>
 </html>

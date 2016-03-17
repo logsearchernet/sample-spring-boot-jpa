@@ -7,7 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 @Entity
+@NamedQueries({
+    @NamedQuery(name="user.count",
+                query="select count(c) from UsersEntity c"),
+    @NamedQuery(name="user.findByEmailAndPassword",
+    		query="select c from UsersEntity c where c.email=:email and c.password=:password")
+})
 @Table(name = "sample_users")
 public class UsersEntity implements Serializable {
 
