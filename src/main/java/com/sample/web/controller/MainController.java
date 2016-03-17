@@ -17,7 +17,7 @@ import com.sample.model.UsersEntity;
 import com.sample.service.RegisterService;
 
 @Controller
-public class MainController {
+public class MainController extends BaseController {
 	
 	private static Log logger = LogFactory.getLog(MainController.class);
 	

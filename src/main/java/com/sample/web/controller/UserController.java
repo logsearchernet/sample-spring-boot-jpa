@@ -17,7 +17,7 @@ import com.sample.service.RegisterService;
 
 @Controller
 @RequestMapping("/user/")
-public class UserController { 
+public class UserController extends BaseController { 
 	
 	private static Log logger = LogFactory.getLog(UserController.class);
 	

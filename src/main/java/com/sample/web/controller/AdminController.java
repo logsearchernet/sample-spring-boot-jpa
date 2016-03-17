@@ -2,7 +2,6 @@ package com.sample.web.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,22 +17,23 @@ import org.h2.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sample.excpetion.CustomGenericException;
 import com.sample.form.FileForm;
 import com.sample.form.UserForm;
 import com.sample.form.UserPasswordForm;
-import com.sample.model.UserRoleId;
 import com.sample.model.UsersEntity;
 import com.sample.service.FileService;
 import com.sample.service.UserService;
 
 @Controller
 @RequestMapping("/admin/")
-public class AdminController { 
+public class AdminController extends BaseController { 
 	
 	private static Log logger = LogFactory.getLog(AdminController.class);
 	
@@ -102,6 +102,10 @@ public class AdminController {
     @RequestMapping(value="userForm")
 	public String userForm(HttpServletRequest request, Model model, @RequestParam(required=false) String email, @RequestParam(required=false) boolean edit){
 		logger.info("-- USER FORM --, email=>"+email);
+		
+		if (StringUtils.isEmpty(email)){
+			throw new CustomGenericException("E100", "Email parameter cannot be empty.");
+		}
 		
 		UserForm form = null;
 		if (email != null) {
